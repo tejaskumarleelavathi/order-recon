@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    # no arm64 build, runs under rosetta on apple silicon
+    platform: linux/amd64
+    container_name: order-recon-db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "${SA_PASSWORD:-Recon_local_2026}"
+    ports:
+      - "${SQL_PORT:-1433}:1433"
+    volumes:
+      - ./sql:/sql:ro
+      - ./data:/data:ro
